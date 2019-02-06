@@ -1,0 +1,13 @@
+C:\aaamyfiles\private\projects\AutomaticTempStorage\AutomaticTempStorage\bin\Debug\netcoreapp2.2\AutomaticTempStorage.deps.json
+C:\aaamyfiles\private\projects\AutomaticTempStorage\AutomaticTempStorage\bin\Debug\netcoreapp2.2\AutomaticTempStorage.runtimeconfig.json
+C:\aaamyfiles\private\projects\AutomaticTempStorage\AutomaticTempStorage\bin\Debug\netcoreapp2.2\AutomaticTempStorage.runtimeconfig.dev.json
+C:\aaamyfiles\private\projects\AutomaticTempStorage\AutomaticTempStorage\bin\Debug\netcoreapp2.2\AutomaticTempStorage.dll
+C:\aaamyfiles\private\projects\AutomaticTempStorage\AutomaticTempStorage\obj\Debug\netcoreapp2.2\AutomaticTempStorage.csprojAssemblyReference.cache
+C:\aaamyfiles\private\projects\AutomaticTempStorage\AutomaticTempStorage\obj\Debug\netcoreapp2.2\AutomaticTempStorage.csproj.CoreCompileInputs.cache
+C:\aaamyfiles\private\projects\AutomaticTempStorage\AutomaticTempStorage\obj\Debug\netcoreapp2.2\AutomaticTempStorage.AssemblyInfoInputs.cache
+C:\aaamyfiles\private\projects\AutomaticTempStorage\AutomaticTempStorage\obj\Debug\netcoreapp2.2\AutomaticTempStorage.AssemblyInfo.cs
+C:\aaamyfiles\private\projects\AutomaticTempStorage\AutomaticTempStorage\bin\Debug\netcoreapp2.2\AutomaticTempStorage.pdb
+C:\aaamyfiles\private\projects\AutomaticTempStorage\AutomaticTempStorage\obj\Debug\netcoreapp2.2\AutomaticTempStorage.dll
+C:\aaamyfiles\private\projects\AutomaticTempStorage\AutomaticTempStorage\obj\Debug\netcoreapp2.2\AutomaticTempStorage.pdb
+C:\aaamyfiles\private\projects\AutomaticTempStorage\AutomaticTempStorage\bin\Debug\netcoreapp2.2\config.json
+C:\aaamyfiles\private\projects\AutomaticTempStorage\AutomaticTempStorage\bin\Debug\netcoreapp2.2\mirror.json
