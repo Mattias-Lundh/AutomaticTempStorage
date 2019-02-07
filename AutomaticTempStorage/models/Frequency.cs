@@ -7,6 +7,6 @@ namespace AutomaticTempStorage.models
     public class Frequency
     {
         public string Value { get; set; }
-        public DateTime latest { get; set; }
+        public DateTime Latest { get; set; }
     }
 }

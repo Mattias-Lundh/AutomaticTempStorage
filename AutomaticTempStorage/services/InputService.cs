@@ -9,6 +9,8 @@ namespace AutomaticTempStorage.services
 
     using AutomaticTempStorage.models;
 
+    using Newtonsoft.Json;
+
     public class InputService
     {
         public MirrorModel Mirror()
@@ -23,12 +25,14 @@ namespace AutomaticTempStorage.services
 
         private ConfigurationModel ParseConfigFile()
         {
-            return new ConfigurationModel();
+            var configdata = File.ReadAllText(Environment.CurrentDirectory + @"\config.json");
+            var config = JsonConvert.DeserializeObject<ConfigurationModel>(configdata);
+            return config;
         }
 
         private MirrorModel ParseMirrorFile()
         {
-            return new MirrorModel();
+            throw new NotImplementedException();
         }
     }
 }

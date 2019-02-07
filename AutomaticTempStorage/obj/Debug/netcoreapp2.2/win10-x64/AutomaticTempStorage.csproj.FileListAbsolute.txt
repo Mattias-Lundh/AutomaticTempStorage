@@ -1,0 +1,16 @@
+C:\aaamyfiles\private\projects\AutomaticTempStorage\AutomaticTempStorage\bin\Debug\netcoreapp2.2\win10-x64\hostpolicy.dll
+C:\aaamyfiles\private\projects\AutomaticTempStorage\AutomaticTempStorage\bin\Debug\netcoreapp2.2\win10-x64\hostfxr.dll
+C:\aaamyfiles\private\projects\AutomaticTempStorage\AutomaticTempStorage\bin\Debug\netcoreapp2.2\win10-x64\AutomaticTempStorage.exe
+C:\aaamyfiles\private\projects\AutomaticTempStorage\AutomaticTempStorage\bin\Debug\netcoreapp2.2\win10-x64\config.json
+C:\aaamyfiles\private\projects\AutomaticTempStorage\AutomaticTempStorage\bin\Debug\netcoreapp2.2\win10-x64\mirror.json
+C:\aaamyfiles\private\projects\AutomaticTempStorage\AutomaticTempStorage\bin\Debug\netcoreapp2.2\win10-x64\AutomaticTempStorage.deps.json
+C:\aaamyfiles\private\projects\AutomaticTempStorage\AutomaticTempStorage\bin\Debug\netcoreapp2.2\win10-x64\AutomaticTempStorage.runtimeconfig.json
+C:\aaamyfiles\private\projects\AutomaticTempStorage\AutomaticTempStorage\bin\Debug\netcoreapp2.2\win10-x64\AutomaticTempStorage.runtimeconfig.dev.json
+C:\aaamyfiles\private\projects\AutomaticTempStorage\AutomaticTempStorage\bin\Debug\netcoreapp2.2\win10-x64\AutomaticTempStorage.dll
+C:\aaamyfiles\private\projects\AutomaticTempStorage\AutomaticTempStorage\bin\Debug\netcoreapp2.2\win10-x64\AutomaticTempStorage.pdb
+C:\aaamyfiles\private\projects\AutomaticTempStorage\AutomaticTempStorage\obj\Debug\netcoreapp2.2\win10-x64\AutomaticTempStorage.csprojAssemblyReference.cache
+C:\aaamyfiles\private\projects\AutomaticTempStorage\AutomaticTempStorage\obj\Debug\netcoreapp2.2\win10-x64\AutomaticTempStorage.csproj.CoreCompileInputs.cache
+C:\aaamyfiles\private\projects\AutomaticTempStorage\AutomaticTempStorage\obj\Debug\netcoreapp2.2\win10-x64\AutomaticTempStorage.AssemblyInfoInputs.cache
+C:\aaamyfiles\private\projects\AutomaticTempStorage\AutomaticTempStorage\obj\Debug\netcoreapp2.2\win10-x64\AutomaticTempStorage.AssemblyInfo.cs
+C:\aaamyfiles\private\projects\AutomaticTempStorage\AutomaticTempStorage\obj\Debug\netcoreapp2.2\win10-x64\AutomaticTempStorage.dll
+C:\aaamyfiles\private\projects\AutomaticTempStorage\AutomaticTempStorage\obj\Debug\netcoreapp2.2\win10-x64\AutomaticTempStorage.pdb

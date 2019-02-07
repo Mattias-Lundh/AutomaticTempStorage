@@ -10,4 +10,3 @@ C:\aaamyfiles\private\projects\AutomaticTempStorage\AutomaticTempStorage\bin\Deb
 C:\aaamyfiles\private\projects\AutomaticTempStorage\AutomaticTempStorage\obj\Debug\netcoreapp2.2\AutomaticTempStorage.dll
 C:\aaamyfiles\private\projects\AutomaticTempStorage\AutomaticTempStorage\obj\Debug\netcoreapp2.2\AutomaticTempStorage.pdb
 C:\aaamyfiles\private\projects\AutomaticTempStorage\AutomaticTempStorage\bin\Debug\netcoreapp2.2\config.json
-C:\aaamyfiles\private\projects\AutomaticTempStorage\AutomaticTempStorage\bin\Debug\netcoreapp2.2\mirror.json

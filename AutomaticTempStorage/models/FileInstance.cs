@@ -4,6 +4,7 @@ using System.Text;
 
 namespace AutomaticTempStorage.models
 {
+    using System.IO;
     using System.Security.AccessControl;
 
     public class FileInstance
@@ -11,5 +12,6 @@ namespace AutomaticTempStorage.models
         public string Name { get; set; }
         public DateTime Created { get; set; }
         public string ParentFolder { get; set; }
+        public string Path { get; set; }
     }
 }

@@ -20,16 +20,27 @@
         }
         public void OnElapsed()
         {
-            var config = this.inputService.Configuration();
             var dir = this.inputService.Configuration().RootDirectory;
             var files = this.LocateFiles(dir);
             var mirror = this.CreateMirror(files);
-            this.UpdateMirror(mirror, config);
+            this.UpdateMirror(mirror);
             this.MoveFilesOnDisk();
         }
 
         private void MoveFilesOnDisk()
         {
+            var mirror = this.LoadMirror();
+            var files = this.LocateFiles(this.inputService.Configuration().RootDirectory);
+            files.ForEach(
+                file =>
+                {
+                    var mirrorFile = mirror.All.FirstOrDefault(f => f.Name == file.Name);
+                    if (null != mirrorFile)
+                    {
+                        var content = File.ReadAllBytes(file.Path);
+                        File.WriteAllBytes(mirrorFile.Path,content);
+                    }
+                });
         }
 
         private List<FileInstance> LocateFiles(string dir)
@@ -44,7 +55,13 @@
                    }
                    else
                    { 
-                      result.Add(new FileInstance { Created = DateTime.Now, Name = e, ParentFolder = Directory.GetParent(e).Name});
+                      result.Add(new FileInstance
+                      {
+                          Created = DateTime.Now,
+                          Name = e,
+                          ParentFolder = Directory.GetParent(e).Name,
+                          Path = e
+                      });
                    }
                });
            return result;
@@ -56,7 +73,7 @@
             files.ForEach(
                 file =>
                 {
-                    switch (file.Name)
+                    switch (file.ParentFolder)
                     {
                         case "temp":
                             result.Daily.Add(file);
@@ -74,19 +91,23 @@
 
         private void SaveMirror(MirrorModel mirror)
         {
-            File.WriteAllText(Environment.CurrentDirectory + "mirror.json",JsonConvert.SerializeObject(mirror));
+            File.WriteAllText(this.inputService.Configuration().RootDirectory + @"\..\mirror.json",JsonConvert.SerializeObject(mirror));
         }
 
         private MirrorModel LoadMirror()
         {
-            return JsonConvert.DeserializeObject<MirrorModel>(File.ReadAllText(Environment.CurrentDirectory + "mirror.json"));
+            return JsonConvert.DeserializeObject<MirrorModel>(File.ReadAllText(this.inputService.Configuration().RootDirectory + @"\..\mirror.json")) ?? new MirrorModel();
         }
 
-        private void UpdateMirror(MirrorModel mirror, ConfigurationModel config)
+        private void UpdateMirror(MirrorModel mirror)
         {
             var newMirror = this.AddNewRecords(mirror);
             newMirror = this.MoveMirrorFiles(newMirror);
-            this.SaveMirror(newMirror);
+            if(newMirror.GetHash() != this.LoadMirror().GetHash())
+            {
+                this.SaveMirror(newMirror);
+                var a = "";
+            }
         }
 
         private MirrorModel AddNewRecords(MirrorModel newMirrorData)
@@ -107,13 +128,13 @@
                         ));
 
             updatedMirror.Weekly.AddRange(
-                newMirrorData.Daily.Select(file => oldMirrorData.Weekly.Contains(file)
+                newMirrorData.Weekly.Select(file => oldMirrorData.Weekly.Contains(file)
                     ? null
                     : file
                 ));
 
             updatedMirror.Monthly.AddRange(
-                newMirrorData.Daily.Select(file => oldMirrorData.Monthly.Contains(file)
+                newMirrorData.Monthly.Select(file => oldMirrorData.Monthly.Contains(file)
                     ? null
                     : file
                 ));
@@ -125,17 +146,17 @@
         {
             var result = mirror;
 
-            result.Daily.Where(f => f.Created < DateTime.Now.AddDays(1)).ToList().ForEach(f =>
+            result.Daily.Where(f => f.Created > DateTime.Now.AddMilliseconds(5000)).ToList().ForEach(f =>
             {
                 result.Weekly.Add(f);
                 result.Daily.Remove(f);
             });
-            result.Weekly.Where(f => f.Created < DateTime.Now.AddDays(7)).ToList().ForEach(f =>
+            result.Weekly.Where(f => f.Created > DateTime.Now.AddMinutes(1)).ToList().ForEach(f =>
             {
                 result.Monthly.Add(f);
                 result.Weekly.Remove(f);
             });
-            result.Monthly.Where(f => f.Created < DateTime.Now.AddMonths(6)).ToList().ForEach(f =>
+            result.Monthly.Where(f => f.Created > DateTime.Now.AddMinutes(5)).ToList().ForEach(f =>
             {
                 result.Monthly.Remove(f);
             });
