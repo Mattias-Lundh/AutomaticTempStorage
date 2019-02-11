@@ -1,25 +1,3 @@
 ﻿{
-  "rootDirectory": "C:\\aaamyfiles\\temp",
-  "schedule": {
-    "frequency1": {
-      "value": "",
-      "latest": ""
-    },
-    "frequency2": {
-      "value": "",
-      "latest": ""
-    },
-    "frequency3": {
-      "value": "",
-      "latest": ""
-    },
-    "frequency4": {
-      "value": "",
-      "latest": ""
-    },
-    "frequency5": {
-      "value": "",
-      "latest": ""
-    }
-  }
+  "rootDirectory": "C:\\aaamyfiles\\temp"
 }

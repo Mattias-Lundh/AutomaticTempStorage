@@ -2,8 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
     using System.Linq;
+    using System.Text.RegularExpressions;
 
     using AutomaticTempStorage.models;
     using AutomaticTempStorage.schedule;
@@ -13,39 +15,45 @@
 
     public class Cleaner : IHeartbeatSubscriber
     {
-        private InputService inputService;
+        private InputService _inputService;
+        private MirrorModel _mirror;
         public Cleaner(InputService inputService)
         {
-            this.inputService = inputService;
+            this._inputService = inputService;
+            this._mirror = this.LoadMirror();
         }
         public void OnElapsed()
         {
-            var dir = this.inputService.Configuration().RootDirectory;
+            var dir = this._inputService.Configuration().RootDirectory;
             var files = this.LocateFiles(dir);
-            var mirror = this.CreateMirror(files);
-            this.UpdateMirror(mirror);
+            this.UpdateMirror(files);
             this.MoveFilesOnDisk();
         }
 
         private void MoveFilesOnDisk()
         {
-            var mirror = this.LoadMirror();
-            var files = this.LocateFiles(this.inputService.Configuration().RootDirectory);
-            files.ForEach(
-                file =>
-                {
-                    var mirrorFile = mirror.All.FirstOrDefault(f => f.Name == file.Name);
-                    if (null != mirrorFile)
-                    {
-                        var content = File.ReadAllBytes(file.Path);
-                        File.WriteAllBytes(mirrorFile.Path,content);
-                    }
-                });
+
+            var test = File.ReadAllText(@"C:\aaamyfiles\temp\test.txt");
+            File.WriteAllText(@"C:\aaamyfiles\temp\newfolder\test.txt", test);
+
+            //var files = this.LocateFiles(this._inputService.Configuration().RootDirectory);
+            //files.ForEach(
+            //    file =>
+            //    {
+            //        var mirrorFile = this._mirror.All.FirstOrDefault(f => f.Name == file.Name);
+            //        if (null != mirrorFile)
+            //        {
+            //            var content = File.ReadAllBytes(file.Path);
+
+            //            File.WriteAllBytes(mirrorFile.Path,content);
+            //        }
+            //    });
         }
 
         private List<FileInstance> LocateFiles(string dir)
         {
            var result = new List<FileInstance>();
+           var filename = new Regex(@"[\w\s]+(?:\.\w+)*$");
            Directory.GetFileSystemEntries(dir).ToList().ForEach(
                e =>
                {
@@ -58,8 +66,7 @@
                       result.Add(new FileInstance
                       {
                           Created = DateTime.Now,
-                          Name = e,
-                          ParentFolder = Directory.GetParent(e).Name,
+                          Name = filename.Match(e).Value,
                           Path = e
                       });
                    }
@@ -67,101 +74,45 @@
            return result;
         }
 
-        private MirrorModel CreateMirror(List<FileInstance> files)
+        private void UpdateMirror(List<FileInstance> files)
         {
-            var result = new MirrorModel();
+            // new mirror based on current file system state
+            var newMirror = new MirrorModel();
             files.ForEach(
                 file =>
                 {
-                    switch (file.ParentFolder)
+                    newMirror.AddFile(file);
+                    
+                }
+           );
+
+            // add newly discovered files
+            newMirror.All.ForEach(
+                newFile =>
+                {
+                    if (null == newMirror.All.FirstOrDefault(oldFile => oldFile.Path == newFile.Path))
                     {
-                        case "temp":
-                            result.Daily.Add(file);
-                            break;
-                        case "week":
-                            result.Weekly.Add(file);
-                            break;
-                        case "month":
-                            result.Monthly.Add(file);
-                            break;
+                        this._mirror.AddFile(newFile);
                     }
-                });
-            return result;
+                }
+                );
+
+            this._mirror = newMirror;
+            // rearrange file locations in mirror
+            this._mirror.All.ForEach(
+                file => { file.Move(); });
+
+            this.SaveMirror();
         }
 
-        private void SaveMirror(MirrorModel mirror)
+        private void SaveMirror()
         {
-            File.WriteAllText(this.inputService.Configuration().RootDirectory + @"\..\mirror.json",JsonConvert.SerializeObject(mirror));
+            File.WriteAllText(this._inputService.Configuration().RootDirectory + @"\..\mirror.json",JsonConvert.SerializeObject(this._mirror));
         }
 
         private MirrorModel LoadMirror()
         {
-            return JsonConvert.DeserializeObject<MirrorModel>(File.ReadAllText(this.inputService.Configuration().RootDirectory + @"\..\mirror.json")) ?? new MirrorModel();
-        }
-
-        private void UpdateMirror(MirrorModel mirror)
-        {
-            var newMirror = this.AddNewRecords(mirror);
-            newMirror = this.MoveMirrorFiles(newMirror);
-            if(newMirror.GetHash() != this.LoadMirror().GetHash())
-            {
-                this.SaveMirror(newMirror);
-                var a = "";
-            }
-        }
-
-        private MirrorModel AddNewRecords(MirrorModel newMirrorData)
-        {
-            var oldMirrorData = this.LoadMirror();
-            var updatedMirror = new MirrorModel
-            {
-                Daily = oldMirrorData.Daily,
-                Weekly = oldMirrorData.Weekly,
-                Monthly = oldMirrorData.Monthly
-            };
-
-
-            updatedMirror.Daily.AddRange(
-                    newMirrorData.Daily.Select(file => oldMirrorData.Daily.Contains(file)
-                        ? null
-                        : file
-                        ));
-
-            updatedMirror.Weekly.AddRange(
-                newMirrorData.Weekly.Select(file => oldMirrorData.Weekly.Contains(file)
-                    ? null
-                    : file
-                ));
-
-            updatedMirror.Monthly.AddRange(
-                newMirrorData.Monthly.Select(file => oldMirrorData.Monthly.Contains(file)
-                    ? null
-                    : file
-                ));
-
-            return updatedMirror;
-        }
-
-        private MirrorModel MoveMirrorFiles(MirrorModel mirror)
-        {
-            var result = mirror;
-
-            result.Daily.Where(f => f.Created > DateTime.Now.AddMilliseconds(5000)).ToList().ForEach(f =>
-            {
-                result.Weekly.Add(f);
-                result.Daily.Remove(f);
-            });
-            result.Weekly.Where(f => f.Created > DateTime.Now.AddMinutes(1)).ToList().ForEach(f =>
-            {
-                result.Monthly.Add(f);
-                result.Weekly.Remove(f);
-            });
-            result.Monthly.Where(f => f.Created > DateTime.Now.AddMinutes(5)).ToList().ForEach(f =>
-            {
-                result.Monthly.Remove(f);
-            });
-
-            return result;
+            return JsonConvert.DeserializeObject<MirrorModel>(File.ReadAllText(this._inputService.Configuration().RootDirectory + @"\..\mirror.json")) ?? new MirrorModel();
         }
     }
 }

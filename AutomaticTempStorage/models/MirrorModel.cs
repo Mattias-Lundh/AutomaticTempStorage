@@ -42,6 +42,22 @@ namespace AutomaticTempStorage.models
             return result;
         }
 
+        public void AddFile(FileInstance file)
+        {
+            switch (file.ParentFolder)
+            {
+                case "temp":
+                    this.Daily.Add(file);
+                    break;
+                case "week":
+                    this.Weekly.Add(file);
+                    break;
+                case "month":
+                    this.Monthly.Add(file);
+                    break;
+            }
+        }
+
         public string GetHash()
         {
             return this.ComputeSha256Hash(this.ToString());

@@ -13,11 +13,6 @@ namespace AutomaticTempStorage.services
 
     public class InputService
     {
-        public MirrorModel Mirror()
-        {
-            return this.ParseMirrorFile();
-        }
-
         public ConfigurationModel Configuration()
         {
             return this.ParseConfigFile();
@@ -28,11 +23,6 @@ namespace AutomaticTempStorage.services
             var configdata = File.ReadAllText(Environment.CurrentDirectory + @"\config.json");
             var config = JsonConvert.DeserializeObject<ConfigurationModel>(configdata);
             return config;
-        }
-
-        private MirrorModel ParseMirrorFile()
-        {
-            throw new NotImplementedException();
         }
     }
 }
